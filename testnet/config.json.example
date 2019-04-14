@@ -1,0 +1,8 @@
+{
+    "host": "https://public-node.testnet.rsk.co:443",
+    "contract": "0x2ea529d70ce2de3040b2b95cf47f141547989d4a",
+    "account": {
+        "address": "0x<your account address>",
+        "privateKey": "0x<your account private key>"
+    }
+}
