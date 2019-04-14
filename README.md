@@ -1,10 +1,10 @@
-# EthBet
+# EthFaucet
 
-Ethereum/RSK bet contract, WIP
+Ethereum/RSK faucet contract, WIP
 
 ## References
 
-- [How to browserify node module ethereumjs-util](https://www.mobilefish.com/developer/nodejs/nodejs_quickguide_browserify_ethereumjs_util.html)
+TBD
 
 ## License
 
