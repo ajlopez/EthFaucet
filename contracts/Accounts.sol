@@ -2,27 +2,22 @@
 pragma solidity ^0.4.24;
 
 contract Accounts {
-    address[] accounts;
-    
-    struct AccountData {
-        bytes publicKey;
-        bytes privateKey;
-    }
-    
-    mapping (address => AccountData) accountsData;
+    address[] accounts;    
+    mapping (address => bytes) data;
     
     function getNoAccounts() public view returns (uint) {
         return accounts.length;
     }
     
-    function registerAccount(address _account, bytes _publicKey, bytes _privateKey) public {
+    function registerAccount(address _account, bytes _data) public {
         accounts.push(_account);
-        accountsData[_account] = AccountData(_publicKey, _privateKey);
+        data[_account] = _data;
     }
     
-    function getAccount() public view returns (address account, bytes publicKey, bytes privateKey) {
+    function getAccount() public view returns (address account, bytes bdata) {
         uint n = now % accounts.length;
         
-        return (accounts[n], accountsData[accounts[n]].publicKey, accountsData[accounts[n]].privateKey);
+        return (accounts[n], data[accounts[n]]);
     }
 }
+
