@@ -1,5 +1,5 @@
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.21 <0.6.0;
 
 contract Faucet {
     uint public amount;
@@ -9,10 +9,10 @@ contract Faucet {
         amount = _amount;
     }
     
-    function () public payable {
+    function () external payable {
     }
     
-    function transfer(address receiver) public {
+    function transfer(address payable receiver) public {
         require(!funded[receiver]);
             
         funded[receiver] = true;

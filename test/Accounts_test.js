@@ -27,8 +27,6 @@ contract('Accounts', function (accounts) {
         
         assert.ok(accountData);
         console.dir(accountData);
-        assert.ok(Array.isArray(accountData));
-        assert.equal(accountData.length, 2);
         assert.equal(accountData[0], accounts[0]);
         assert.equal(accountData[1], '0x01');
     });
@@ -43,8 +41,6 @@ contract('Accounts', function (accounts) {
         
         assert.ok(accountData);
         console.dir(accountData);
-        assert.ok(Array.isArray(accountData));
-        assert.equal(accountData.length, 2);
         assert.equal(accountData[0], accounts[1]);
         assert.equal(accountData[1], '0x02');
     });

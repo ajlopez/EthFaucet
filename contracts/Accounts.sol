@@ -1,5 +1,5 @@
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.21 <0.6.0;
 
 contract Accounts {
     address[] accounts;    
@@ -10,12 +10,12 @@ contract Accounts {
         return accounts.length;
     }
     
-    function registerAccount(address _account, bytes _data) public {
+    function registerAccount(address _account, bytes memory _data) public {
         accounts.push(_account);
         data[_account] = _data;
     }
     
-    function getAccount() public view returns (address account, bytes bdata) {
+    function getAccount() public view returns (address account, bytes memory bdata) {
         uint n = now % accounts.length;
 
         while (reserved[accounts[n]])

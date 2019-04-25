@@ -11,7 +11,7 @@ contract('Faucet', function (accounts) {
     it('initial balance', async function () {
         const initialBalance = await web3.eth.getBalance(this.faucet.address);
         
-        assert.equal(initialBalance.toNumber(), 10000000);
+        assert.equal(initialBalance, 10000000);
     });
     
     it('fund account', async function () {
@@ -19,7 +19,7 @@ contract('Faucet', function (accounts) {
         await this.faucet.transfer(accounts[1]);
         
         const balance = await web3.eth.getBalance(accounts[1]); 
-        assert.ok(balance.equals(initialBalance.add(1000000)));
+        assert.equal(balance, new web3.utils.BN(initialBalance).addn(1000000));
     });
     
     it('fund account twice', async function () {
@@ -28,6 +28,6 @@ contract('Faucet', function (accounts) {
         await expectThrow(this.faucet.transfer(accounts[1]));
         
         const balance = await web3.eth.getBalance(accounts[1]); 
-        assert.ok(balance.equals(initialBalance.add(1000000)));
+        assert.equal(balance, new web3.utils.BN(initialBalance).addn(1000000));
     });
 });
