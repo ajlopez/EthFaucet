@@ -1,0 +1,21 @@
+{
+  "name": "ethfaucet",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Ethereum RSK Faucet Contract",
+  "main": "index.js",
+  "scripts": {
+    "test": "truffle test",
+    "compile": "truffle compile"
+  },
+  "keywords": [
+    "ethereum",
+    "rsk",
+    "faucet"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "truffle": "5.1.14"
+  }
+}
