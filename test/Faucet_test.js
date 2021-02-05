@@ -8,6 +8,12 @@ contract('Faucet', function (accounts) {
         this.faucet = await Faucet.new(1000000, { value: 10000000 });
     });
     
+    it('initial owner', async function () {
+        const initialOwner = await this.faucet.owner();
+        
+        assert.equal(initialOwner, accounts[0]);
+    });
+    
     it('initial balance', async function () {
         const initialBalance = await web3.eth.getBalance(this.faucet.address);
         

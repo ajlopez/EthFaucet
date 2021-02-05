@@ -1,10 +1,15 @@
-pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.6.12;
 
 contract Faucet {
+    address public owner;
+    
     uint public amount;
+    
     mapping (address => bool) public funded;
     
     constructor(uint _amount) public payable {
+        owner = msg.sender;
         amount = _amount;
     }
     

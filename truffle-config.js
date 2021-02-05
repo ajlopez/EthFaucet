@@ -16,6 +16,12 @@ module.exports = {
   // See <http://truffleframework.com/docs/advanced/configuration>
   // to customize your Truffle configuration!
   
+    // Set default mocha options here, use special reporters etc.
+    mocha: {
+        reporter: 'eth-gas-reporter'
+        // timeout: 100000
+    },
+
     // Configure your compilers
     compilers: {
         solc: {
@@ -25,7 +31,7 @@ module.exports = {
                     enabled: false,
                     runs: 200
                 },
-                evmVersion: "constantinople"
+                evmVersion: "byzantium"
             }
         }
     }
