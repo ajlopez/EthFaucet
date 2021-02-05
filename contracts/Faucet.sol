@@ -13,10 +13,16 @@ contract Faucet {
         setAmount(_amount);
     }
     
+    modifier onlyOwner() {
+        require(msg.sender == owner);
+        
+        _;
+    }
+    
     receive () external payable {
     }
     
-    function setAmount(uint newAmount) public {
+    function setAmount(uint newAmount) public onlyOwner {
         amount = newAmount;
     }
     

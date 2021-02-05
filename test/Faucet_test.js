@@ -1,7 +1,7 @@
 
 const Faucet = artifacts.require('./Faucet.sol');
 
-const expectThrow = require('./utils').expectThrow;
+const truffleAssertions = require('truffle-assertions');
 
 contract('Faucet', function (accounts) {
     const amount = 1000000;
@@ -28,6 +28,18 @@ contract('Faucet', function (accounts) {
         assert.equal(initialAmount, amount);
     });
     
+    it('set amount', async function () {
+        await this.faucet.setAmount(amount * 2);
+        
+        const initialAmount = Number(await this.faucet.amount());
+        
+        assert.equal(initialAmount, amount * 2);
+    });
+    
+    it('only owner can set amount', async function () {
+        await truffleAssertions.reverts(this.faucet.setAmount(amount * 2, { from: accounts[1] }));
+    });
+    
     it('fund account', async function () {
         const initialBalance = await web3.eth.getBalance(accounts[1]); 
         await this.faucet.transfer(accounts[1]);
@@ -39,9 +51,10 @@ contract('Faucet', function (accounts) {
     it('fund account twice', async function () {
         const initialBalance = await web3.eth.getBalance(accounts[1]); 
         await this.faucet.transfer(accounts[1]);
-        await expectThrow(this.faucet.transfer(accounts[1]));
+        await truffleAssertions.reverts(this.faucet.transfer(accounts[1]));
         
         const balance = await web3.eth.getBalance(accounts[1]); 
         assert.equal(balance, new web3.utils.BN(initialBalance).addn(1000000));
     });
 });
+
