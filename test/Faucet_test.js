@@ -4,8 +4,10 @@ const Faucet = artifacts.require('./Faucet.sol');
 const expectThrow = require('./utils').expectThrow;
 
 contract('Faucet', function (accounts) {
+    const amount = 1000000;
+    
     beforeEach(async function () {
-        this.faucet = await Faucet.new(1000000, { value: 10000000 });
+        this.faucet = await Faucet.new(amount, { value: 10000000 });
     });
     
     it('initial owner', async function () {
@@ -18,6 +20,12 @@ contract('Faucet', function (accounts) {
         const initialBalance = await web3.eth.getBalance(this.faucet.address);
         
         assert.equal(initialBalance, 10000000);
+    });
+    
+    it('initial amount', async function () {
+        const initialAmount = Number(await this.faucet.amount());
+        
+        assert.equal(initialAmount, amount);
     });
     
     it('fund account', async function () {

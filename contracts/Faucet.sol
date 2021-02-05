@@ -10,10 +10,14 @@ contract Faucet {
     
     constructor(uint _amount) public payable {
         owner = msg.sender;
-        amount = _amount;
+        setAmount(_amount);
     }
     
     receive () external payable {
+    }
+    
+    function setAmount(uint newAmount) public {
+        amount = newAmount;
     }
     
     function transfer(address payable receiver) public {
