@@ -5,12 +5,14 @@ contract Faucet {
     address public owner;
     
     uint public amount;
+    uint public nblocks;
     
     mapping (address => bool) public funded;
     
-    constructor(uint _amount) public payable {
+    constructor(uint _amount, uint _nblocks) public payable {
         owner = msg.sender;
         setAmount(_amount);
+        setNBlocks(_nblocks);
     }
     
     modifier onlyOwner() {
@@ -24,6 +26,10 @@ contract Faucet {
     
     function setAmount(uint newAmount) public onlyOwner {
         amount = newAmount;
+    }
+    
+    function setNBlocks(uint newNBlocks) public onlyOwner {
+        nblocks = newNBlocks;
     }
     
     function transfer(address payable receiver) public {
