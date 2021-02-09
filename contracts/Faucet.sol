@@ -32,7 +32,7 @@ contract Faucet {
         nblocks = newNBlocks;
     }
     
-    function transfer(address payable receiver) public {
+    function transferToAddress(address payable receiver) public {
         require(!funded[receiver]);
             
         funded[receiver] = true;

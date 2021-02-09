@@ -59,18 +59,18 @@ contract('Faucet', function (accounts) {
         await truffleAssertions.reverts(this.faucet.setNBlocks(nblocks * 2, { from: accounts[1] }));
     });
     
-    it('fund account', async function () {
+    it('transfer to address', async function () {
         const initialBalance = await web3.eth.getBalance(accounts[1]); 
-        await this.faucet.transfer(accounts[1]);
+        await this.faucet.transferToAddress(accounts[1]);
         
         const balance = await web3.eth.getBalance(accounts[1]); 
         assert.equal(balance, new web3.utils.BN(initialBalance).addn(1000000));
     });
     
-    it('fund account twice', async function () {
+    it('transfer to address twice', async function () {
         const initialBalance = await web3.eth.getBalance(accounts[1]); 
-        await this.faucet.transfer(accounts[1]);
-        await truffleAssertions.reverts(this.faucet.transfer(accounts[1]));
+        await this.faucet.transferToAddress(accounts[1]);
+        await truffleAssertions.reverts(this.faucet.transferToAddress(accounts[1]));
         
         const balance = await web3.eth.getBalance(accounts[1]); 
         assert.equal(balance, new web3.utils.BN(initialBalance).addn(1000000));
