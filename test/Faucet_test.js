@@ -3,12 +3,27 @@ const Faucet = artifacts.require('./Faucet.sol');
 
 const truffleAssertions = require('truffle-assertions');
 
+function generateRandomHexaByte() {
+    let n = Math.floor(Math.random() * 255).toString(16);
+    
+    while (n.length < 2)
+        n = '0' + n;
+    
+    return n;
+}
+
+function generateRandomAddress() {
+    let txt = '';
+    
+    for (let k = 0; k < 20; k++)
+        txt += generateRandomHexaByte();
+    
+    return '0x' + txt;
+}
+
 contract('Faucet', function (accounts) {
     const alice = accounts[0];
     const bob = accounts[1];
-    
-    const charlie = "0x1ac16d9523832f9a5f4b6d7758353ed4902f842d";
-    const dan = "0xb7c11a420c30b686ebc07d07f576d10286e0b1b3";
     
     const amount = 1000000;
     const nblocks = 10;
@@ -66,6 +81,8 @@ contract('Faucet', function (accounts) {
     });
     
     it('transfer to address', async function () {
+        const charlie = generateRandomAddress();
+        
         const initialBalance = await web3.eth.getBalance(charlie); 
         await this.faucet.transferToAddress(charlie);
         
@@ -74,10 +91,14 @@ contract('Faucet', function (accounts) {
     });
     
     it('only owner can transfer to address', async function () {
+        const charlie = generateRandomAddress();
+        
         await truffleAssertions.reverts(this.faucet.transferToAddress(charlie, { from: bob }));
     });
     
     it('transfer to address twice', async function () {
+        const dan = generateRandomAddress();
+        
         const initialBalance = await web3.eth.getBalance(dan); 
         await this.faucet.transferToAddress(dan);
         await truffleAssertions.reverts(this.faucet.transferToAddress(dan));
