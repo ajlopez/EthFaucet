@@ -67,6 +67,10 @@ contract('Faucet', function (accounts) {
         assert.equal(balance, new web3.utils.BN(initialBalance).addn(1000000));
     });
     
+    it('only owner can transfer to address', async function () {
+        await truffleAssertions.reverts(this.faucet.transferToAddress(accounts[1], { from: accounts[2] }));
+    });
+    
     it('transfer to address twice', async function () {
         const initialBalance = await web3.eth.getBalance(accounts[1]); 
         await this.faucet.transferToAddress(accounts[1]);
