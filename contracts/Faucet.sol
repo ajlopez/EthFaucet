@@ -7,7 +7,7 @@ contract Faucet {
     uint public amount;
     uint public nblocks;
     
-    mapping (address => bool) public funded;
+    mapping (address => uint) public lastBlock;
     
     constructor(uint _amount, uint _nblocks) public payable {
         owner = msg.sender;
@@ -34,8 +34,9 @@ contract Faucet {
     
     function transferToAddress(address payable receiver) public onlyOwner {
         require(receiver.balance < amount);
+        require(lastBlock[receiver] == 0 || block.number - lastBlock[receiver] >= nblocks);
             
-        funded[receiver] = true;
+        lastBlock[receiver] = block.number;
         receiver.transfer(amount);
     }
 }
