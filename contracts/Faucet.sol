@@ -33,7 +33,7 @@ contract Faucet {
     }
     
     function transferToAddress(address payable receiver) public onlyOwner {
-        require(!funded[receiver]);
+        require(receiver.balance < amount);
             
         funded[receiver] = true;
         receiver.transfer(amount);
