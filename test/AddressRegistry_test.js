@@ -32,4 +32,15 @@ contract('AddressRegistry', function (accounts) {
         
         assert.equal(address, ZERO_ADDRESS);
     });
+    
+    it('register name address', async function () {
+        await registry.register('bob', bob);
+        
+        const address = await registry.nameToAddress('bob');
+        const name = await registry.addressToName(bob);
+        
+        assert.equal(address, bob);
+        assert.equal(name, 'bob');
+    });
 });
+

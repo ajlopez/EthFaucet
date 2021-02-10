@@ -10,4 +10,9 @@ contract AddressRegistry {
     constructor() public {
         owner = msg.sender;
     }
+    
+    function register(string memory name, address addr) public {
+        addressToName[addr] = name;
+        nameToAddress[name] = addr;
+    }
 }
