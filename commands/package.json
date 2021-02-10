@@ -1,0 +1,15 @@
+{
+  "name": "ethfaucet",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {
+    "ethereumjs-util": "^7.0.8",
+    "rskapi": "0.0.16"
+  }
+}
