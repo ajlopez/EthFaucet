@@ -42,5 +42,9 @@ contract('AddressRegistry', function (accounts) {
         assert.equal(address, bob);
         assert.equal(name, 'bob');
     });
+    
+    it('only owner can register name address', async function () {
+        await truffleAssertions.reverts(registry.register('bob', bob, { from: bob }));
+    });
 });
 

@@ -11,7 +11,12 @@ contract AddressRegistry {
         owner = msg.sender;
     }
     
-    function register(string memory name, address addr) public {
+    modifier onlyOwner() {
+        require(owner == msg.sender);
+        _;
+    }
+    
+    function register(string memory name, address addr) public onlyOwner {
         addressToName[addr] = name;
         nameToAddress[name] = addr;
     }
