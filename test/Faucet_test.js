@@ -80,6 +80,136 @@ contract('Faucet', function (accounts) {
         await truffleAssertions.reverts(this.faucet.setNBlocks(nblocks * 2, { from: accounts[1] }));
     });
     
+    it('transfer to sender', async function () {
+        const charlie = generateRandomAddress();
+        
+        const initialBalance = await web3.eth.getBalance(bob); 
+        
+        await web3.eth.sendTransaction({
+            from: bob,
+            to: charlie,
+            value: initialBalance,
+            gas: 21000,
+            gasPrice: 0
+        });
+        
+        await web3.eth.sendTransaction({
+            from: alice,
+            to: bob,
+            value: amount / 2,
+            gas: 21000,
+            gasPrice: 0
+        });
+        
+        await this.faucet.transferToSender({ from: bob, gasPrice: 0 });
+        
+        const balance = Number(await web3.eth.getBalance(bob)); 
+        assert.equal(balance, amount / 2 + amount);
+    });
+    
+    it('cannot transfer to sender twice if not enough blocks elapsed', async function () {
+        const charlie = generateRandomAddress();
+        
+        const initialBalance = await web3.eth.getBalance(bob); 
+        
+        await web3.eth.sendTransaction({
+            from: bob,
+            to: charlie,
+            value: initialBalance,
+            gas: 21000,
+            gasPrice: 0
+        });
+        
+        await web3.eth.sendTransaction({
+            from: alice,
+            to: bob,
+            value: amount / 2,
+            gas: 21000,
+            gasPrice: 0
+        });
+        
+        await this.faucet.transferToSender({ from: bob, gasPrice: 0 });
+        
+        await web3.eth.sendTransaction({
+            from: bob,
+            to: charlie,
+            value: amount,
+            gas: 21000,
+            gasPrice: 0
+        });
+        
+        await truffleAssertions.reverts(this.faucet.transferToSender({ from: bob, gasPrice: 0 }));
+        
+        const balance = Number(await web3.eth.getBalance(bob)); 
+        assert.equal(balance, amount / 2);
+    });
+    
+    it('transfer to sender twice if enough blocks elapsed', async function () {
+        const charlie = generateRandomAddress();
+        
+        const initialBalance = await web3.eth.getBalance(bob); 
+        
+        await web3.eth.sendTransaction({
+            from: bob,
+            to: charlie,
+            value: initialBalance,
+            gas: 21000,
+            gasPrice: 0
+        });
+        
+        await web3.eth.sendTransaction({
+            from: alice,
+            to: bob,
+            value: amount / 2,
+            gas: 21000,
+            gasPrice: 0
+        });
+        
+        await this.faucet.transferToSender({ from: bob, gasPrice: 0 });
+        
+        await web3.eth.sendTransaction({
+            from: bob,
+            to: charlie,
+            value: amount,
+            gas: 21000,
+            gasPrice: 0
+        });
+        
+        await this.faucet.setNBlocks(1);
+        
+        await this.faucet.transferToSender({ from: bob, gasPrice: 0 });
+        
+        const balance = Number(await web3.eth.getBalance(bob)); 
+        assert.equal(balance, amount / 2 + amount);
+    });
+    
+    it('cannot transfer to sender if it has enough balance', async function () {
+        const charlie = generateRandomAddress();
+        
+        const initialBalance = await web3.eth.getBalance(bob); 
+        
+        await web3.eth.sendTransaction({
+            from: bob,
+            to: charlie,
+            value: initialBalance,
+            gas: 21000,
+            gasPrice: 0
+        });
+        
+        await web3.eth.sendTransaction({
+            from: alice,
+            to: bob,
+            value: amount * 2,
+            gas: 21000,
+            gasPrice: 0
+        });
+        
+        await truffleAssertions.reverts(this.faucet.transferToSender({ from: bob, gasPrice: 0 }));
+        
+        const balance = Number(await web3.eth.getBalance(bob)); 
+        assert.equal(balance, amount * 2);
+    });
+    
     it('transfer to address', async function () {
         const charlie = generateRandomAddress();
         
@@ -93,7 +223,7 @@ contract('Faucet', function (accounts) {
     it('only owner can transfer to address', async function () {
         const charlie = generateRandomAddress();
         
-        await truffleAssertions.reverts(this.faucet.transferToAddress(charlie, { from: bob }));
+        await truffleAssertions.reverts(this.faucet.transferToAddress(charlie, { from: bob, gasPrice: 0 }));
     });
     
     it('cannot transfer to address twice because high balance', async function () {

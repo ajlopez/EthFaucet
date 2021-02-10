@@ -32,7 +32,15 @@ contract Faucet {
         nblocks = newNBlocks;
     }
     
+    function transferToSender() public {
+        _transferToAddress(msg.sender);
+    }
+    
     function transferToAddress(address payable receiver) public onlyOwner {
+        _transferToAddress(receiver);
+    }
+    
+    function _transferToAddress(address payable receiver) private {
         require(receiver.balance < amount);
         require(lastBlock[receiver] == 0 || block.number - lastBlock[receiver] >= nblocks);
             
