@@ -106,26 +106,64 @@ contract('Faucet', function (accounts) {
         const balance = await web3.eth.getBalance(dan); 
         assert.equal(balance, new web3.utils.BN(initialBalance).addn(1000000));
     });
-
-/*    
+    
     it('cannot transfer to address twice because few blocks elapsed', async function () {
         const charlie = generateRandomAddress();
         
         const initialBalance = await web3.eth.getBalance(bob); 
-        await this.faucet.transferToAddress(bob);
-        
+
         await web3.eth.sendTransaction({
-            from: dan,
+            from: bob,
+            to: charlie,
+            value: initialBalance,
+            gas: 21000,
+            gasPrice: 0
+        });
+
+        await this.faucet.transferToAddress(bob);
+
+        await web3.eth.sendTransaction({
+            from: bob,
             to: charlie,
             value: amount / 2,
             gas: 21000,
             gasPrice: 0
         });
         
-        await truffleAssertions.reverts(this.faucet.transferToAddress(dan));
+        await truffleAssertions.reverts(this.faucet.transferToAddress(bob));
         
-        const balance = await web3.eth.getBalance(dan); 
-        assert.equal(balance, new web3.utils.BN(initialBalance).addn(500000));
-    }); */
+        const balance = Number(await web3.eth.getBalance(bob)); 
+        assert.equal(balance, amount / 2);
+    });
+    
+    it('cannot transfer to address twice because few blocks elapsed', async function () {
+        const charlie = generateRandomAddress();
+        
+        const initialBalance = await web3.eth.getBalance(bob); 
+
+        await web3.eth.sendTransaction({
+            from: bob,
+            to: charlie,
+            value: initialBalance,
+            gas: 21000,
+            gasPrice: 0
+        });
+
+        await this.faucet.transferToAddress(bob);
+
+        await web3.eth.sendTransaction({
+            from: bob,
+            to: charlie,
+            value: amount / 2,
+            gas: 21000,
+            gasPrice: 0
+        });
+        
+        await this.faucet.setNBlocks(2);
+        await this.faucet.transferToAddress(bob);
+        
+        const balance = Number(await web3.eth.getBalance(bob)); 
+        assert.equal(balance, amount / 2 + amount);
+    });
 });
 
