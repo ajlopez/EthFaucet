@@ -38,6 +38,14 @@ contract('Faucet', function (accounts) {
         assert.equal(initialOwner, alice);
     });
     
+    it('set owner', async function () {
+        await this.faucet.setOwner(bob);
+        
+        const owner = await this.faucet.owner();
+        
+        assert.equal(owner, bob);
+    });
+    
     it('initial balance', async function () {
         const initialBalance = await web3.eth.getBalance(this.faucet.address);
         
