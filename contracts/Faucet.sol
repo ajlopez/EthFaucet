@@ -9,6 +9,8 @@ contract Faucet {
     
     mapping (address => uint) public lastBlock;
     
+    event TransferTo(address indexed receiver, uint amount);
+    
     constructor(uint _amount, uint _nblocks) public payable {
         owner = msg.sender;
         setAmount(_amount);
@@ -50,6 +52,8 @@ contract Faucet {
             
         lastBlock[receiver] = block.number;
         receiver.transfer(amount);
+        
+        emit TransferTo(receiver, amount);
     }
 }
 

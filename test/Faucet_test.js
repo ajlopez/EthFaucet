@@ -109,7 +109,16 @@ contract('Faucet', function (accounts) {
             gasPrice: 0
         });
         
-        await this.faucet.transferToSender({ from: bob, gasPrice: 0 });
+        const txresult = await this.faucet.transferToSender({ from: bob, gasPrice: 0 });
+        
+        truffleAssertions.eventEmitted(
+            txresult, 
+            'TransferTo', 
+            function (ev) {
+                return ev.receiver.toLowerCase() == bob.toLowerCase() &&
+                    Number(ev.amount) == amount;
+            }
+        );
         
         const balance = Number(await web3.eth.getBalance(bob)); 
         assert.equal(balance, amount / 2 + amount);
