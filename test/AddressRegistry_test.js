@@ -21,6 +21,22 @@ contract('AddressRegistry', function (accounts) {
         assert.equal(owner, alice);
     });
     
+    it('change owner', async function () {
+        await registry.setOwner(bob);
+        
+        const owner = await registry.owner();
+        
+        assert.equal(owner, bob);
+    });
+    
+    it('only owner can change owner', async function () {
+        await truffleAssertions.reverts(registry.setOwner(bob, { from: bob }));
+        
+        const owner = await registry.owner();
+        
+        assert.equal(owner, alice);
+    });
+    
     it('unknown address', async function () {
         const name = await registry.addressToName(bob);
         

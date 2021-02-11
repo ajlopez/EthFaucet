@@ -16,6 +16,10 @@ contract AddressRegistry {
         _;
     }
     
+    function setOwner(address newowner) public onlyOwner {
+        owner = newowner;
+    }
+    
     function register(string memory name, address addr) public onlyOwner {
         addressToName[addr] = name;
         nameToAddress[name] = addr;
