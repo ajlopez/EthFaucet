@@ -231,7 +231,17 @@ contract('Faucet', function (accounts) {
         const charlie = generateRandomAddress();
         
         const initialBalance = await web3.eth.getBalance(charlie); 
-        await this.faucet.transferToAddress(charlie);
+
+        const txresult = await this.faucet.transferToAddress(charlie);
+        
+        truffleAssertions.eventEmitted(
+            txresult, 
+            'TransferTo', 
+            function (ev) {
+                return ev.receiver.toLowerCase() == charlie.toLowerCase() &&
+                    Number(ev.amount) == amount;
+            }
+        );
         
         const balance = await web3.eth.getBalance(charlie); 
         assert.equal(balance, new web3.utils.BN(initialBalance).addn(1000000));
