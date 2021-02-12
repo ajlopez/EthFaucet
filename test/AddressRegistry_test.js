@@ -50,7 +50,16 @@ contract('AddressRegistry', function (accounts) {
     });
     
     it('register name address', async function () {
-        await registry.register('bob', bob);
+        const txresult = await registry.register('bob', bob);
+        
+        truffleAssertions.eventEmitted(
+            txresult, 
+            'Register', 
+            function (ev) {
+                return ev.addr.toLowerCase() == bob.toLowerCase() &&
+                    ev.name == 'bob';
+            }
+        );
         
         const address = await registry.nameToAddress('bob');
         const name = await registry.addressToName(bob);

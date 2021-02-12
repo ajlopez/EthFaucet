@@ -7,6 +7,8 @@ contract AddressRegistry {
     mapping(address => string) public addressToName;
     mapping(string => address) public nameToAddress;
     
+    event Register(address indexed addr, string name);
+    
     constructor() public {
         owner = msg.sender;
     }
@@ -23,5 +25,7 @@ contract AddressRegistry {
     function register(string memory name, address addr) public onlyOwner {
         addressToName[addr] = name;
         nameToAddress[name] = addr;
+        
+        emit Register(addr, name);
     }
 }
