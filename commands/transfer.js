@@ -15,7 +15,7 @@ const client = rskapi.client(config.host);
 
 (async function() {
     try {
-        const txh = await client.transfer(sender, receiver, value, { gas: 100000 });
+        const txh = await client.transfer(sender, receiver, value);
         console.log('transaction', txh);
         const txr = await client.receipt(txh, 0);
         
