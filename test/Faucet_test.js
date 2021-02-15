@@ -191,5 +191,16 @@ contract('Faucet', function (accounts) {
         const balance = Number(await web3.eth.getBalance(bob)); 
         assert.equal(balance, amount / 2 + amount);
     });
+    
+    it('kill faucet', async function () {
+        const initialBalance = Number(await web3.eth.getBalance(alice));
+        const faucetBalance = Number(await web3.eth.getBalance(this.faucet.address));
+        
+        await this.faucet.kill({ gasPrice: 0 });
+        
+        const finalBalance = Number(await web3.eth.getBalance(alice));
+        
+        assert.equal(finalBalance, initialBalance + faucetBalance);
+    });
 });
 

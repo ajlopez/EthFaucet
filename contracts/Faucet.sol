@@ -47,5 +47,9 @@ contract Faucet {
         
         emit TransferTo(receiver, amount);
     }
+    
+    function kill() public {
+        selfdestruct(payable(owner));
+    }
 }
 
