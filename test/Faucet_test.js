@@ -46,6 +46,14 @@ contract('Faucet', function (accounts) {
         assert.equal(owner, bob);
     });
     
+    it('only owner can change owner', async function () {
+        await truffleAssertions.reverts(this.faucet.setOwner(bob, { from: bob }));
+        
+        const owner = await this.faucet.owner();
+        
+        assert.equal(owner, alice);
+    });
+    
     it('initial balance', async function () {
         const initialBalance = await web3.eth.getBalance(this.faucet.address);
         

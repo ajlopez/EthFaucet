@@ -23,7 +23,7 @@ contract Faucet {
         _;
     }
     
-    function setOwner(address newOwner) public {
+    function setOwner(address newOwner) public onlyOwner {
         owner = newOwner;
     }
     
