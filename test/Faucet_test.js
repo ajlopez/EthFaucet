@@ -202,5 +202,9 @@ contract('Faucet', function (accounts) {
         
         assert.equal(finalBalance, initialBalance + faucetBalance);
     });
+    
+    it('only owner can kill faucet', async function () {
+        await truffleAssertions.reverts(this.faucet.kill({ from: bob, gasPrice: 0 }));
+    });
 });
 
