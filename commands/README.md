@@ -83,5 +83,19 @@ node invoke alice token1 transfer(address,uint256) charlie,1000
 
 If the invocation has more than one argument, they are separated by commas.
 
+## Register user
 
+You must deploy a `registry` contract to use this command.
+
+```
+node register <username> <password>
+```
+
+## Login user
+
+You must deploy a `registry` contract to use this command.
+
+```
+node register <username> <password>
+```
 
