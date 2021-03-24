@@ -5,8 +5,8 @@ module.exports = async function (context, args) {
     const utils = context.utils;
     
     try {
-        const username = args[1];
-        const password = args[2];
+        const username = args[0];
+        const password = args[1];
         
         console.log('check username availability');
         const address0 = await context.command('call').execute([ 'root', 'registry', 'nameToAddress(string)', "'" + username + "'" , 'address' ]);
@@ -33,3 +33,4 @@ module.exports = async function (context, args) {
         console.log(ex);
     }
 }
+
