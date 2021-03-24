@@ -1,5 +1,12 @@
 # Commands
 
+Use these commands to play with the `faucet` and
+`registry`, registering new users, funding them
+and checking the login credentials.
+
+YOU MUST compile the smart contracts in the project
+main folder.
+
 ## Install
 
 Install `rskcli` command tools, globally:
