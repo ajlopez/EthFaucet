@@ -62,8 +62,8 @@ rskcli execute setup
 This command:
 - Creates and funds faucet owner account
 - Creates and funds registry owner account
-- Deploy a faucet instance
-- Deploy a registry instance
+- Deploys a faucet instance
+- Deploys a registry instance
 
 The faucet instance can give funds to an account.
 
@@ -120,7 +120,4 @@ Possible outcomes:
 - Invalid password: the derived address don't match the address
 stored in `registry` instance
 - All OK
-
-
-
 
