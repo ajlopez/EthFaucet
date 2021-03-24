@@ -1,101 +1,123 @@
 # Commands
 
-These command line programs uses a `config.json` to save intermediate results.
+## Install
 
-## Specify the host to use
-
-```
-node sethost http://localhost:4444
-node sethost https://public-testnet.rsk.co:443
-node sethost http://localhost:8545
-```
-
-## Named account
+Install `rskcli` command tools, globally:
 
 ```
-node setaccount root 0
-node setaccount alice 1
+npm install -g rskcli
 ```
 
-The number indicates the position of the account in the host wallet. `ganache-cli`
-has 10 accounts and `rskj` local/regtest has 11 accounts available to use.
+## Setting a Host
 
-## New account
+### Using Ganache
 
-```
-node newaccount alice
-node newaccount bob
-node newaccount charlie
-```
+Launch your `ganache` local node in other process.
 
-New accounts are created, with private keys, public keys and addresses.
-
-## Get account balance
-```
-node getbalance root
-node getbalance alice
-```
-The value is expressed in `weis`.
-
-## Get account balances
-```
-node getbalances
-```
-Retrieves all known accounts and deployed instances balances, expressed
-in `weis`.
-
-## Get account gas supplies
-```
-node getgassupplies
-```
-Retrieves all known accounts and deployed instances gas supply. Each
-supply is the account balance divided by the gas price currently expected
-by the network.
-
-## Transfer
+Then, execute:
 
 ```
-node transfer root alice 1000000000
+rskcli sethost ganache
+rskcli setaccount root 0
 ```
 
-## Deploy contract
-```
-node deploy counter1 Counter
-```
+Now, the `root` account is one of the `ganache` public
+accounts, with enough balance to execute the next commands.
 
-The last argument is the name of the compiled contract (in these samples,
-the contract information is into `build/contracts`. `counter1` is the
-logical name of the new instance.
+### Using RSK Regtest
 
+Launch your `rsk` local node in other process.
 
-## Call contract
-```
-node call root counter1 counter()
-node call alice counter1 counter()
-```
-
-## Invoke contract
-```
-node invoke root counter1 increment()
-node invoke alice counter1 add(uint256) 42
-node invoke alice token1 transfer(address,uint256) charlie,1000
-```
-
-If the invocation has more than one argument, they are separated by commas.
-
-## Register user
-
-You must deploy a `registry` contract to use this command.
+Then, execute:
 
 ```
-node register <username> <password>
+rskcli sethost regtest
+rskcli setaccount root 0
 ```
 
-## Login user
+Now, the `root` account is one of the `rsk` public
+accounts, with enough balance to execute the next commands.
 
-You must deploy a `registry` contract to use this command.
+### Using RSK Testnet with Public Nodes
+
+Execute:
 
 ```
-node register <username> <password>
+rskcli sethost testnet
+rskcli newaccount root
 ```
+
+Then, use the [RSK Testnet Faucet](https://faucet.rsk.co/) to
+get initial funding in `RBTC`.
+
+## Setup the Accounts and Instances
+
+Now, having defined a host and a `root` account with
+funds, execute:
+
+```
+rskcli execute setup
+```
+
+This command:
+- Creates and funds faucet owner account
+- Creates and funds registry owner account
+- Deploys a faucet instance
+- Deploys a registry instance
+
+The faucet instance can give funds to an account.
+
+The registry instance keeps the association between
+known users and their account addresses.
+
+## Register a New User
+
+```
+rskcli execute register <username> <password>
+```
+
+Examples:
+```
+rskcli execute register alice rskisgreat
+rskcli execute register bob inyourfaceethereum
+```
+
+The user is created, with a private key and public addresses
+derived from the combination of username and password.
+
+The association between the username and the generated
+address is saved in the `registry` smart contract instance.
+
+The password is not saved in any place.
+
+Additionally, the created user account receives funds
+from the `faucet` smart contract instance.
+
+Check the balance with:
+```
+rskcli balance alice
+rskcli balance bob
+```
+
+## Login
+
+In order to check the valid username and password combination,
+execute:
+
+```
+rskcli execute login <username> <password>
+```
+
+Examples:
+```
+rskcli execute login alice idontremember
+rskcli execute login bob inyourfaceethereum
+```
+
+Possible outcomes:
+
+- Unknown user: the user is not stored in the `registry` instance
+- Invalid password: the derived address don't match the address
+stored in `registry` instance
+- All OK
 
