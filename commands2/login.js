@@ -3,7 +3,10 @@ const users = require('./lib/users');
 module.exports = async function (context, args) {
     const configs = context.configs;
     const utils = context.utils;
+    const ethutil = context.require('ethereumjs-util');    
     
+    users.useEthUtil(ethutil);
+
     const username = args[0];
     const password = args[1];
     

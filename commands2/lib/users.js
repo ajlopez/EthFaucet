@@ -1,5 +1,5 @@
 
-const ethutil = require('ethereumjs-util');
+let uthutil;
 
 function fromNameToAccount(name, password, prefix) {
     const text = prefix  + ':' + name + ':' + password;
@@ -20,5 +20,6 @@ function fromNameToAccount(name, password, prefix) {
 }
 
 module.exports = {
-    fromNameToAccount
+    fromNameToAccount,
+    useEthUtil: function (ethut) { ethutil = ethut; }
 }
