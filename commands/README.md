@@ -12,7 +12,7 @@ main folder.
 Install `rskcli` command tools, globally:
 
 ```
-npm install -g rskcli
+npm install -g rskclitools
 ```
 
 ## Setting a Host
